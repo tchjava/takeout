@@ -22,17 +22,28 @@ public class TakeoutUtil {
      */
     public static Collection<List<Double>> noRepetition(List<String> list) {
         Map<Integer, List<Double>> map = new HashMap<>();
-        List<Double> key = new ArrayList<>();
+        //放一个hashcode的List
+        List<Integer> hashList = new ArrayList<>();
         for (String s : list) {
             List<Double> target = stringListToDoubleListAndSort(s);
-            if (!eqList(target, key)) {
-                map.put(target.hashCode(), target);
-            }
-            key = target;
+                int hashCodeKey=getCustomHashCode(target);
+                if(!hashList.contains(hashCodeKey)){
+                    hashList.add(hashCodeKey);
+                    map.put(target.hashCode(), target);
+                }
         }
         return map.values();
     }
-
+    /**
+     * 得到一个特殊的hashcode
+     */
+    public static int getCustomHashCode(List<Double> list){
+        int result=0;
+        for(Double doubleKey:list){
+            result+=doubleKey.hashCode()+list.size();
+        }
+        return result;
+    }
     /**
      * 比较两个集合内容是否相同
      */

@@ -49,11 +49,6 @@ public class App {
             //得到不重复的排列组合
             Collection<List<Double>> finalScheme = TakeoutUtil.noRepetition(dkrList);
 
-            //测试代码
-            for(List<Double> sss:finalScheme){
-                System.out.println("测试sss集合长度，理论上长度是1，但是结果是:"+sss.size());
-            }
-            //测试代码结束
 
 
             //询问饭费的价格
@@ -107,6 +102,8 @@ public class App {
                 scheme.setMealCost(mealPrice);
                 //设置米饭的数量
                 scheme.setMealNum(mealNum);
+                //设置菜品价格数量
+                scheme.setDishNum(doubles.size());
                 //设置餐盒费
                 scheme.setLunchBoxCost(lunchBoxPrice);
                 //设置配送费
@@ -119,20 +116,37 @@ public class App {
                 scheme.setScheme(doubles);
                 schemes.add(scheme);
             }
-            Scheme scheme=ComputeFactory.firstOptimalScheme(schemes);
-            System.out.println(scheme.getDishNum()+"个菜品的最优方案:");
-            System.out.print("菜品价格:");
-            for(Double doubleKey:scheme.getScheme()){
-                System.out.print(doubleKey.doubleValue()+" ");
-            }
-            System.out.println();
-            System.out.println("-----完毕------");
+            List<Scheme> sortedSchemeList=ComputeFactory.optimalScheme(schemes);
+            print(sortedSchemeList);
         }catch(Exception e){
             throw new NumberFormatException("是真的价格还是乱填，自己心里没点B数吗?");
         }
 
     }
 
+    public static void print(List<Scheme> schemes){
+        System.out.println("最终方案表如下:");
+        String pattern = "|\t菜品数\t|\t组合情况\t%s|\t最终付费\t|";
+        String str = "";
+        for (int i = 0; i <schemes.get(0).getDishNum() ; i++) {
+            str += "\t";
+        }
+        pattern = String.format(pattern, str);
+        System.out.println(pattern);
+
+        for (Scheme scheme:schemes){
+            pattern="|\t   %s\t|\t%s\t|\t%s\t|";
+            pattern=String.format(pattern, scheme.getDishNum(),"%s","%s");
+            String assemble = "";
+            for(Double doubleKey:scheme.getScheme()){
+                assemble+=doubleKey;
+            }
+            pattern=String.format(pattern,assemble,"%s");
+            pattern=String.format(pattern,scheme.getFinalPrice());
+            System.out.print(pattern);
+            System.out.println();
+        }
+    }
     /**
      * 压入满减或者红包的计划
      * @param plan

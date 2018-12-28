@@ -29,6 +29,9 @@ public class ComputeFactory {
         //补充scheme的属性
         for(Scheme scheme:schemes){
             //设置总价格->计算方式:饭盒费*(饭的数量+菜品的数量)+饭的价格*饭的数量+菜品的总价格
+           double totalPirce= scheme.getLunchBoxCost()*(scheme.getMealNum()+scheme.getDishNum())+
+                    scheme.getMealNum()*scheme.getMealCost()+
+                    scheme.getFoodPriceTotal();
             scheme.setTotalPrice(
                     scheme.getLunchBoxCost()*(scheme.getMealNum()+scheme.getDishNum())+
                             scheme.getMealNum()*scheme.getMealCost()+
@@ -52,9 +55,11 @@ public class ComputeFactory {
 
         }
         //排序按最优的排序
-        return schemes.stream().sorted((s1,s2)->{
-            return  Double.compare(s2.getFinalPrice(),s1.getFinalPrice());
-        }).collect(Collectors.toList());
+        return schemes.stream().sorted(
+                (s1,s2)->{
+                   return Double.compare(s1.getFinalPrice(),s2.getFinalPrice());
+                }
+        ).collect(Collectors.toList());
     }
 
     /**
