@@ -132,6 +132,13 @@ public class App {
         }
 
     }
+
+    /**
+     * 压入满减或者红包的计划
+     * @param plan
+     * @param planMap
+     * @return
+     */
     public static TreeMap<Double,Double> putPlan(String plan,TreeMap<Double, Double> planMap){
         try{
            String[] str=plan.split(",");
