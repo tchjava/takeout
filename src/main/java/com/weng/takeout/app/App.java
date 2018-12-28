@@ -49,6 +49,13 @@ public class App {
             //得到不重复的排列组合
             Collection<List<Double>> finalScheme = TakeoutUtil.noRepetition(dkrList);
 
+            //测试代码
+            for(List<Double> sss:finalScheme){
+                System.out.println("测试sss集合长度，理论上长度是1，但是结果是:"+sss.size());
+            }
+            //测试代码结束
+
+
             //询问饭费的价格
             double mealPrice = Double.parseDouble(scanner("米饭的价格"));
             //询问米饭数量
@@ -60,7 +67,7 @@ public class App {
             //满减
             TreeMap<Double, Double> planMap = new TreeMap<>();
             while(true){
-                planMap=putPlan(scanner("满减的方案如满30减5元请写成-->30,5"));
+                planMap=putPlan(scanner("满减的方案如满30减5元请写成-->30,5"),planMap);
                String instrcut=scanner("还有吗?y/n");
                if("n".equalsIgnoreCase(instrcut)){
                    break;
@@ -78,7 +85,7 @@ public class App {
             TreeMap<Double, Double> readPacketMap = new TreeMap<>();
             //红包
             while(true){
-                readPacketMap=putPlan(scanner("红包的方案如满30,5元可用请写成-->30,5"));
+                readPacketMap=putPlan(scanner("红包的方案如满30,5元可用请写成-->30,5"),readPacketMap);
                 String instrcut=scanner("还有吗?y/n");
                 if("n".equalsIgnoreCase(instrcut)){
                     break;
@@ -125,12 +132,11 @@ public class App {
         }
 
     }
-    public static TreeMap<Double,Double> putPlan(String plan){
+    public static TreeMap<Double,Double> putPlan(String plan,TreeMap<Double, Double> planMap){
         try{
            String[] str=plan.split(",");
-            TreeMap<Double, Double> map = new TreeMap<>();
-            map.put(Double.valueOf(str[0]),Double.valueOf(str[1]));
-            return map;
+            planMap.put(Double.valueOf(str[0]),Double.valueOf(str[1]));
+            return planMap;
         }catch (Exception e){
             throw new NumberFormatException("是真的价格还是乱填，自己心里没点B数吗?");
         }

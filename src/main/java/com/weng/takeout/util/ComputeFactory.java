@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 */
 public class ComputeFactory {
     /**
+     * P:?
      * 得到最优方案排序
      * @param schemes
      * @return
@@ -40,7 +41,6 @@ public class ComputeFactory {
                 //根据满减的方案和目前的总价格得到一个具体满减
                  Map<Double,Double>saleMap= arriveStage(scheme.getSalePlan(),scheme.getTotalPrice());
                 //具体减多少
-                //todo:有bug
                 scheme.setSaleAfterPrice(scheme.getTotalPrice()-saleMap.get(((TreeMap<Double,Double>)saleMap).firstKey()));
             }
             //设置最终价格->打折后的价格+配送费+红包的方案
@@ -80,6 +80,9 @@ public class ComputeFactory {
             if(key>doubleKey.doubleValue()){
                 treeMap.put(doubleKey,targetMap.get(doubleKey));
             }
+        }
+        if(treeMap.size()==0){
+            treeMap.put(0d, 0d);
         }
         return treeMap;
     }
