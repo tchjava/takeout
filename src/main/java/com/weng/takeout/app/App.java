@@ -5,6 +5,7 @@ import com.weng.takeout.util.ComputeFactory;
 import com.weng.takeout.util.TakeoutUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -129,7 +130,9 @@ public class App {
         String pattern = "|\t菜品数\t|\t组合情况\t%s|\t最终付费\t|";
         String str = "";
         for (int i = 0; i <schemes.get(0).getDishNum() ; i++) {
-            str += "\t";
+            if(i>2){
+                str += "\t";
+            }
         }
         pattern = String.format(pattern, str);
         System.out.println(pattern);
@@ -139,10 +142,11 @@ public class App {
             pattern=String.format(pattern, scheme.getDishNum(),"%s","%s");
             String assemble = "";
             for(Double doubleKey:scheme.getScheme()){
-                assemble+=doubleKey;
+                assemble+=doubleKey+",";
             }
+            assemble=assemble.substring(0,assemble.lastIndexOf(","));
             pattern=String.format(pattern,assemble,"%s");
-            pattern=String.format(pattern,scheme.getFinalPrice());
+            pattern=String.format(pattern,new BigDecimal(scheme.getFinalPrice()).setScale(1,BigDecimal.ROUND_HALF_UP));
             System.out.print(pattern);
             System.out.println();
         }
